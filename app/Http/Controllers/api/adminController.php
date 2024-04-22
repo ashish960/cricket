@@ -165,21 +165,23 @@ else{
     try{
         $updateTeamStatus =Team::where(['game_id'=>$request['game_id']])->where(['team_no'=> 1])->first();
         $updateTeamStatus->team_status =1;
+        $updateTeamStatus->team_current_overs =1;
+        $updateTeamStatus->current_over_ball =1;
         $updatePlayerStatus =Player::where(['game_id'=>$request['game_id']])->where(['team_no'=> 1])->where(['player_no'=> 1])->first();  
         $updatePlayerStatus->player_status =1;
         $updateTeam =  Team::where(['game_id'=>$request['game_id']])->where('team_no', '!=', 1)->get();
-        $updateTeam->team_status =0;
-        $updatePlayer =  Player::where(['game_id'=>$request['game_id']])->where(['team_no'=> 1])->where('player_no', '!=', 1)->get();
+        $data =$updateTeam->team_status =0;
+        
+        $updatePlayer =  Player::where(['game_id'=>$request['game_id']])->where(['team_no'=> 1])->where('player_no', '!=', 1)->first();
         $updatePlayer->player_status =0;
-        $updatePlayer2 =  Player::where(['game_id'=>$request['game_id']])->where(['team_no'=> 2])->where('player_no', '!=', 1)->get();
-        $updatePlayer2->player_status=0;
+
 
 
          $updateTeamStatus->save();
          $updatePlayerStatus->save();
          $updateTeam->save();
          $updatePlayer->save();
-         $updatePlayer2->save();
+         
 
       }catch(\Exception $err){
             $updateTeamStatus=null;

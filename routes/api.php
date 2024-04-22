@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
-
+use App\Http\Controllers\Api\scorerController;
+use App\Http\Controllers\Api\viewerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,13 @@ Route::post('/addPlayer',[AdminController::class,'AddPlayer']);
 
 //admin start game
 Route::post('/StartGame',[AdminController::class,'StartGame']);
+
+
+
+
+//playgame
+Route::post('/PlayGame',[scorerController::class,'playGame']);
+
+
+//to view score
+Route::post('/viewScore',[viewerController::class,'viewScore']);
