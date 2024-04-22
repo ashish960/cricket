@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\api;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\adminLogin;
 use App\Http\Requests\setGames;
 use App\Http\Requests\addPlayer;
 use App\Http\Requests\addTeam;
+use App\Http\Requests\startGame;
+
 
 use App\Models\User;
 use App\Models\Setgame;
@@ -88,13 +91,14 @@ public function AddTeam(addTeam $request){
                     else{
                         return response()->json([
                             'message' => 'Internal server error',
+                            'error_msg'=>$err->getMessage(),
                             'status' =>0
                         ],500);
                   }       
         }
         else{
             return response()->json([
-                'message' => 'Team No Exceeds Beyond the Team limit for the game the Team no should be between 1 to '.$teamSize ,
+                'message' => 'Team No Exceeds Beyond the Team limit for the game the Team no should be between 1 to '.$game['no_of_teams'] ,
                 'status' =>0
             ],400);
         }   
@@ -108,17 +112,12 @@ public function AddTeam(addTeam $request){
 
 
 
-
-
-
-
-
 //Admin set Player
 public function AddPlayer(addPlayer $request){
     $game=Setgame::where(['game_id'=>$request['game_id']])->first();
-    $player= Player::where(['game_id'=>$request['game_id']])->where(['player_no'=> $request['player_no']])->first();
+    $player= Player::where(['game_id'=>$request['game_id']])->where(['player_no'=> $request['player_no']])->where(['team_no'=>$request['team_no']])->first();
     if($player == null){
-    if($request['player_no'] <= $gameData['player_size']){
+    if($request['player_no'] <= $game['no_of_players']){
             $data=[
                 'player_name' =>$request->player_name,
                 'player_no' =>$request->player_no,
@@ -145,7 +144,7 @@ public function AddPlayer(addPlayer $request){
     }
     else{
         return response()->json([
-            'message' => 'Player No Exceeds Beyond the Player limit for the game the player no should be between 1 to '.$playerSize ,
+            'message' => 'Player No Exceeds Beyond the Player limit for the game the player no should be between 1 to '.$game['no_of_players'] ,
             'status'=>0
         ],400);
     }   
@@ -160,18 +159,48 @@ else{
 
     
 
+//admin start game
+
+   public function StartGame(startGame $request){
+    try{
+        $updateTeamStatus =Team::where(['game_id'=>$request['game_id']])->where(['team_no'=> 1])->first();
+        $updateTeamStatus->team_status =1;
+        $updatePlayerStatus =Player::where(['game_id'=>$request['game_id']])->where(['team_no'=> 1])->where(['player_no'=> 1])->first();  
+        $updatePlayerStatus->player_status =1;
+        $updateTeam =  Team::where(['game_id'=>$request['game_id']])->where('team_no', '!=', 1)->get();
+        $updateTeam->team_status =0;
+        $updatePlayer =  Player::where(['game_id'=>$request['game_id']])->where(['team_no'=> 1])->where('player_no', '!=', 1)->get();
+        $updatePlayer->player_status =0;
+        $updatePlayer2 =  Player::where(['game_id'=>$request['game_id']])->where(['team_no'=> 2])->where('player_no', '!=', 1)->get();
+        $updatePlayer2->player_status=0;
 
 
+         $updateTeamStatus->save();
+         $updatePlayerStatus->save();
+         $updateTeam->save();
+         $updatePlayer->save();
+         $updatePlayer2->save();
 
+      }catch(\Exception $err){
+            $updateTeamStatus=null;
+            $updatePlayerStatus= null;
+            $updatePlayer =null;
+            $updateTeam= null;
+            $updatePlayer2=null;
+    }
+    if($updateTeamStatus == null && $updatePlayerStatus == null &&  $updatePlayer &&  $updateTeam  && $updatePlayer2 ){
+        return response()->json([
+            'status' => 0,
+            'message'=> 'Internal Server Error'
+        ],500); 
+    }else{
 
-
-
-
-
-
-
-
-
+  return response()->json([
+      'status' => 1,
+      'message'=> 'Game Started'
+  ],200);                    
+}
+}        
 
 
 }

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('team_name');
             $table->string('team_no');
             $table->string('team_current_size')->nullable();
-            $table->string('team_status')->comment("1:Batting,0:Bowling")->default(0);
+            $table->boolean('team_status')->comment("1:Batting,0:Bowling")->default(0);
             $table->string('team_score')->default(0);
-            $table->string('team_current_overs')->deafault(0);
+            $table->string('team_current_overs')->default(0);
             $table->string('current_over_ball')->default(0);
             $table->string('game_id');
             $table->foreign('game_id')->references('game_id')->on('setgames');

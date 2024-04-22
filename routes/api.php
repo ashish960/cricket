@@ -32,3 +32,6 @@ Route::post('/addTeam',[AdminController::class,'AddTeam']);
 
 //admin add player
 Route::post('/addPlayer',[AdminController::class,'AddPlayer']);
+
+//admin start game
+Route::post('/StartGame',[AdminController::class,'StartGame']);

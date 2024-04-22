@@ -26,7 +26,7 @@ class setGames extends FormRequest
         return [
             'game_id'=>'required|integer|unique:setgames,game_id|gt:0',
             'game_name'=>'required|string',
-            'no_of_teams'=>'required|integer|gt:1',
+            'no_of_teams'=>'required|integer|gt:1|in:2',
             'no_of_players'=>'required|integer|gt:1',
             'no_of_overs'=>'required|integer|gt:0'
 
