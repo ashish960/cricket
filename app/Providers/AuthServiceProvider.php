@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use laravel\Passport\Passport;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -25,6 +26,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Passport::tokensCan([
+            'Admin' => 'admin',
+            
+        ]) ;
     }
+   
 }

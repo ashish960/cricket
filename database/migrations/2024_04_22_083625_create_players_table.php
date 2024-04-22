@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('players', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
+            $table->string('player_name');
+            $table->string('player_no');
+            $table->string('team_no');
+            $table->string('player_status')->comment("1:Active,0:Inactive,2:out,3:stand")->default(0);
+            $table->string('game_id');
+            $table->foreign('game_id')->references('game_id')->on('setgames');
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('players');
     }
 };

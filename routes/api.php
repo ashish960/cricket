@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AdminController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +19,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//adminLogin
+Route::post('/adminLogin',[AdminController::class,'adminLogin']);
+
+
+//setGame
+Route::post('/setGame',[AdminController::class,'SetGame']);
+
+//admin add team
+Route::post('/addTeam',[AdminController::class,'AddTeam']);
+
+//admin add player
+Route::post('/addPlayer',[AdminController::class,'AddPlayer']);
