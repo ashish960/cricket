@@ -29,4 +29,12 @@ class playGame extends FormRequest
             'hit'=>'required|in:1,2,3,4,6,wide,noball,out'
         ];
     }
+    public function messages(){
+        return [
+           
+            'game_id.exists'=>'Invalid Game:There is not such game exists ',
+            'team_no.exists'=>'invalid team no'
+        ];
+    }
+    
 }

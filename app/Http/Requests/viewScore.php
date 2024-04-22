@@ -28,4 +28,11 @@ class viewScore extends FormRequest
             'team_no'=>'required|integer|gt:0|exists:teams,team_no',
         ];
     }
+    public function messages(){
+        return [
+            'game_id.exists'=>'The given game not exists',
+            'team_no.exists'=>'The given team not exists'
+        ];
+    }
+
 }

@@ -29,4 +29,10 @@ class addTeam extends FormRequest
             'team_no'=>'required|integer|gt:0'
         ];
     }
+    public function messages(){
+        return [
+           
+            'game_id.exists'=>'Invalid Game:There is not such game exists '
+        ];
+    }
 }
